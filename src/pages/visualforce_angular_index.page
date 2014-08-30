@@ -1,0 +1,14 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" docType="html-5.0" applyBodyTag="false">
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<apex:stylesheet value="{!URLFOR($Resource.static, 'css/style.css')}" />
+		<style>[ng-cloak] { display: none; }</style>
+	</head>
+	<body>
+
+		<apex:includeScript value="{!URLFOR($Resource.static, 'js/angular.min.js')}"/>
+		<apex:includeScript value="{!URLFOR($Resource.static, 'js/angular-route.min.js')}"/>
+		<apex:includeScript value="{!URLFOR($Resource.static, 'app/app.js')}"/>
+	</body>
+</apex:page>
