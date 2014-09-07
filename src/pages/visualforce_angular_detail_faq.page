@@ -1,0 +1,15 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false">
+	<h3>{{ articleWrapper.title }}</h3>
+	<p>{{ articleWrapper.summary }}</p>
+	<h4>{{ articleWrapper.question }}</h4>
+	<p>{{ articleWrapper.answer }}</p>
+	<span>Last Published: {{ articleWrapper.publishDate | date:'mediumDate' }}</span>
+	<ul>
+		<li>Language: {{ articleWrapper.language }}</li>
+		<li>View Count: {{ articleWrapper.viewCount }}</li>
+		<li>View Score: {{ articleWrapper.viewScore }}</li>
+		<li>Vote Count: {{ articleWrapper.voteCount }}</li>
+		<li>Vote Score: {{ articleWrapper.voteScore }}</li>
+	</ul>
+	<a href="/#">Back</a>
+</apex:page>

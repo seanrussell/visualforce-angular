@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
+        <members>visualforce_angular_detail_documentation</members>
+        <members>visualforce_angular_detail_faq</members>
+        <members>visualforce_angular_detail_howto</members>
         <members>visualforce_angular_index</members>
+        <members>visualforce_angular_list</members>
         <name>ApexPage</name>
+    </types>
+    <types>
+        <members>Documentation__kav</members>
+        <members>FAQ__kav</members>
+        <members>How_To__kav</members>
+        <name>CustomObject</name>
     </types>
     <types>
         <members>static</members>

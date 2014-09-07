@@ -1,0 +1,45 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false">
+	<div>
+		<input type="text" ng-model="filterCriteria.searchText" />
+		<div>
+			<h5>Article Type Filter</h5>
+			<ul>
+				<li ng-repeat="articleType in articleTypes">
+					{{ articleType }}
+					<input type="checkbox" ng-model="filterCriteria[articleType]" />
+				</li>
+			</ul>
+		</div>
+		<nav>
+			<ul>
+				<li><span ng-click="lang='en_US'">English</span></li>
+				<li><span ng-click="lang='de'">Deutsch</span></li>
+				<li><span ng-click="lang='ja'">Nihongo</span></li>
+				<li><span ng-click="lang='zh'">Zhongguo</span></li>
+				<li><span ng-click="lang='fr'">Francais</span></li>
+			</ul>
+		</nav>
+	</div>
+	<ul>
+		<li><span ng-click="doSort('publishDate')">Date</span></li>
+		<li><span ng-click="doSort('viewScore')">Views</span></li>
+		<li><span ng-click="doSort('voteScore')">Votes</span></li>
+		<li><span ng-click="doSort('title')">Title</span></li>
+	</ul>
+	<ul>
+		<li ng-repeat="article in articleWrappers | ArticleListFilter:filterCriteria | orderBy:sortBy:reverse">
+			<h3>
+				<a href="#/{{ article.articleType }}/{{ article.id }}/{{ lang }}">{{ article.title }}</a>
+			</h3>
+			<p>{{ article.summary }}</p>
+			<span>Last Published: {{ article.publishDate | date:'mediumDate' }}</span>
+			<ul>
+				<li>Language: {{ article.language }}</li>
+				<li>View Count: {{ article.viewCount }}</li>
+				<li>View Score: {{ article.viewScore }}</li>
+				<li>Vote Count: {{ article.voteCount }}</li>
+				<li>Vote Score: {{ article.voteScore }}</li>
+			</ul>
+		</li>
+	</ul>
+</apex:page>

@@ -1,14 +1,129 @@
 <apex:page showHeader="false" sidebar="false" standardStylesheets="false" docType="html-5.0" applyBodyTag="false">
 	<head>
 		<meta charset="utf-8" />
-		<title></title>
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width" />
+		<title>Visualforce &amp; AngularJs Demonstration</title>
+		<apex:stylesheet value="{!URLFOR($Resource.static, 'css/reset.css')}" />
 		<apex:stylesheet value="{!URLFOR($Resource.static, 'css/style.css')}" />
 		<style>[ng-cloak] { display: none; }</style>
 	</head>
-	<body>
+	<body ng-app="knowledgeArticlesApp">
+		<main>
+			<ng-view></ng-view>
+		</main>
+	
+		<!-- Define the remote objects for each article type and related objects -->
+		<apex:remoteObjects jsNamespace="RemoteObjectModel">
+			<apex:remoteObjectModel name="KnowledgeArticleVersion">
+				<apex:remoteObjectField name="KnowledgeArticleId" />
+				<apex:remoteObjectField name="ArticleType" />
+				<apex:remoteObjectField name="Title" />
+				<apex:remoteObjectField name="Summary" />
+				<apex:remoteObjectField name="LastPublishedDate" />
+				<apex:remoteObjectField name="PublishStatus" />
+				<apex:remoteObjectField name="Language" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="KnowledgeArticleViewStat">
+				<apex:remoteObjectField name="Channel" />
+				<apex:remoteObjectField name="NormalizedScore" />
+				<apex:remoteObjectField name="ParentId" />
+				<apex:remoteObjectField name="ViewCount" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="KnowledgeArticleVoteStat">
+				<apex:remoteObjectField name="Channel" />
+				<apex:remoteObjectField name="NormalizedScore" />
+				<apex:remoteObjectField name="ParentId" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="How_To__kav" jsShorthand="HowTo">
+				<apex:remoteObjectField name="KnowledgeArticleId" />
+				<apex:remoteObjectField name="ArticleType" />
+				<apex:remoteObjectField name="Title" />
+				<apex:remoteObjectField name="Summary" />
+				<apex:remoteObjectField name="Content__c" />
+				<apex:remoteObjectField name="LastPublishedDate" />
+				<apex:remoteObjectField name="PublishStatus" />
+				<apex:remoteObjectField name="Language" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="How_To__ViewStat" jsShorthand="HowToViewStat">
+				<apex:remoteObjectField name="Channel" />
+				<apex:remoteObjectField name="NormalizedScore" />
+				<apex:remoteObjectField name="ParentId" />
+				<apex:remoteObjectField name="ViewCount" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="How_To__VoteStat" jsShorthand="HowToVoteStat">
+				<apex:remoteObjectField name="Channel" />
+				<apex:remoteObjectField name="NormalizedScore" />
+				<apex:remoteObjectField name="ParentId" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="Documentation__kav" jsShorthand="Documentation">
+				<apex:remoteObjectField name="KnowledgeArticleId" />
+				<apex:remoteObjectField name="ArticleType" />
+				<apex:remoteObjectField name="Title" />
+				<apex:remoteObjectField name="Summary" />
+				<apex:remoteObjectField name="Content__c" />
+				<apex:remoteObjectField name="LastPublishedDate" />
+				<apex:remoteObjectField name="PublishStatus" />
+				<apex:remoteObjectField name="Language" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="Documentation__ViewStat" jsShorthand="DocumentationViewStat">
+				<apex:remoteObjectField name="Channel" />
+				<apex:remoteObjectField name="NormalizedScore" />
+				<apex:remoteObjectField name="ParentId" />
+				<apex:remoteObjectField name="ViewCount" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="Documentation__VoteStat" jsShorthand="DocumentationVoteStat">
+				<apex:remoteObjectField name="Channel" />
+				<apex:remoteObjectField name="NormalizedScore" />
+				<apex:remoteObjectField name="ParentId" />
+			</apex:remoteObjectModel>		
+			<apex:remoteObjectModel name="FAQ__kav" jsShorthand="FAQ">
+				<apex:remoteObjectField name="KnowledgeArticleId" />
+				<apex:remoteObjectField name="ArticleType" />
+				<apex:remoteObjectField name="Title" />
+				<apex:remoteObjectField name="Summary" />
+				<apex:remoteObjectField name="Question__c" />
+				<apex:remoteObjectField name="Answer__c" />
+				<apex:remoteObjectField name="LastPublishedDate" />
+				<apex:remoteObjectField name="PublishStatus" />
+				<apex:remoteObjectField name="Language" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="FAQ__ViewStat" jsShorthand="FAQViewStat">
+				<apex:remoteObjectField name="Channel" />
+				<apex:remoteObjectField name="NormalizedScore" />
+				<apex:remoteObjectField name="ParentId" />
+				<apex:remoteObjectField name="ViewCount" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="FAQ__VoteStat" jsShorthand="FAQVoteStat">
+				<apex:remoteObjectField name="Channel" />
+				<apex:remoteObjectField name="NormalizedScore" />
+				<apex:remoteObjectField name="ParentId" />
+			</apex:remoteObjectModel>
+		</apex:remoteObjects>
+		
+		<!-- AngularJs specific -->
+		<script src="{!URLFOR($Resource.static, 'js/angular.min.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'js/angular-route.min.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'js/angular-sanitize.min.js')}"/>
 
-		<apex:includeScript value="{!URLFOR($Resource.static, 'js/angular.min.js')}"/>
-		<apex:includeScript value="{!URLFOR($Resource.static, 'js/angular-route.min.js')}"/>
-		<apex:includeScript value="{!URLFOR($Resource.static, 'app/app.js')}"/>
+		<!-- Application specific -->
+		<script src="{!URLFOR($Resource.static, 'app/app.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/factories/articleCacheFactory.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/filters/articleListFilter.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/knowledgeArticlesService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/knowledgeArticlesViewStatService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/knowledgeArticlesVoteStatService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/howToArticlesService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/howToViewStatService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/howToVoteStatService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/documentationArticlesService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/documentationViewStatService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/documentationVoteStatService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/faqArticlesService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/faqViewStatService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/faqVoteStatService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/controllers/knowledgeArticlesController.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/controllers/howToArticleDetailsController.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/controllers/documentationArticleDetailsController.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/controllers/faqArticleDetailsController.js')}"/>
 	</body>
 </apex:page>

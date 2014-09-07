@@ -3,7 +3,7 @@
     <apiVersion>30.0</apiVersion>
     <availableInTouch>false</availableInTouch>
     <confirmationTokenRequired>false</confirmationTokenRequired>
-    <label>visualforce_angular_index</label>
+    <label>visualforce_angular_list</label>
     <packageVersions>
         <majorNumber>1</majorNumber>
         <minorNumber>6</minorNumber>
