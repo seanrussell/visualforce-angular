@@ -7,10 +7,6 @@
 
 		var pubStatus = 'Online';
 
-		var articles = [];
-
-		var deferred = $q.defer();
-
 		var faqArticleRO = new RemoteObjectModel.FAQ();
 
 		this.getFaqArticles = function(lang) {
@@ -29,19 +25,11 @@
 			return query(constraints);
 		};
 
-		this.getFaqArticle = function(id, lang) {
-			var constraints = {
-				where: { 
-					and: {
-						Id: { eq: id },
-						Language: { eq: lang }  
-					}
-				}
-	        };
-			return query(constraints);
-		};
+		function query(queryContraints) {
+			var articles = [];	
 
-		function query(queryContraints) {		
+			var deferred = $q.defer();	
+
 	        faqArticleRO.retrieve(queryContraints, function(error, records) {
 	            if (error) {
 	                deferred.reject(error);
@@ -49,8 +37,8 @@
 	            	articles = toJson(records);
 	                deferred.resolve(articles);
 	            }
-	        });        
-	        
+	        });       
+	         	        
 	        return deferred.promise;
 	    }
 

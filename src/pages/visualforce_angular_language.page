@@ -1,0 +1,99 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false">
+	<h1 class="app-name ng-scope">Select Language</h1>
+  <div class="scrollable ng-scope">
+		<div class="scrollable-content">
+			<div class="list-group" toggle="off" bubble="" target="rightSidebar">
+				<a class="list-group-item media ng-scope" href="">
+      				<div class="pull-left">
+        				<i class="fa fa-asterisk chat-user-avatar"></i>
+      				</div>
+      				<div class="media-body">
+          				<h5 class="media-heading ng-binding">
+          					<span ng-click="getArticlesByLanguage('en_US')">English</span>	
+          				</h5>
+      				</div>
+    			</a>
+    			<a class="list-group-item media ng-scope" href="">
+      				<div class="pull-left">
+        				<i class="fa fa-asterisk chat-user-avatar"></i>
+      				</div>
+      				<div class="media-body">
+          				<h5 class="media-heading ng-binding">
+          					<span ng-click="getArticlesByLanguage('it')">Italiano</span>	
+          				</h5>
+      				</div>
+    			</a>
+    			<a class="list-group-item media ng-scope" href="">
+      				<div class="pull-left">
+        				<i class="fa fa-asterisk chat-user-avatar"></i>
+      				</div>
+      				<div class="media-body">
+          				<h5 class="media-heading ng-binding">
+          					<span ng-click="getArticlesByLanguage('ja')">日本語</span>	
+          				</h5>
+      				</div>
+    			</a>
+    			<a class="list-group-item media ng-scope" href="">
+      				<div class="pull-left">
+        				<i class="fa fa-asterisk chat-user-avatar"></i>
+      				</div>
+      				<div class="media-body">
+          				<h5 class="media-heading ng-binding">
+          					<span ng-click="getArticlesByLanguage('zh_TW')">中國</span>
+          				</h5>
+      				</div>
+    			</a>
+    			<a class="list-group-item media ng-scope" href="">
+      				<div class="pull-left">
+        				<i class="fa fa-asterisk chat-user-avatar"></i>
+      				</div>
+      				<div class="media-body">
+          				<h5 class="media-heading ng-binding">
+          					<span ng-click="getArticlesByLanguage('de')">Deutsch</span>
+          				</h5>
+      				</div>
+    			</a>
+    			<a class="list-group-item media ng-scope" href="">
+      				<div class="pull-left">
+        				<i class="fa fa-asterisk chat-user-avatar"></i>
+      				</div>
+      				<div class="media-body">
+          				<h5 class="media-heading ng-binding">
+          					<span ng-click="getArticlesByLanguage('fr')">Français</span>
+          				</h5>
+      				</div>
+    			</a>
+    			<a class="list-group-item media ng-scope" href="">
+      				<div class="pull-left">
+        				<i class="fa fa-asterisk chat-user-avatar"></i>
+      				</div>
+      				<div class="media-body">
+          				<h5 class="media-heading ng-binding">
+          					<span ng-click="getArticlesByLanguage('es')">Español</span>
+          				</h5>
+      				</div>
+    			</a>
+    			<a class="list-group-item media ng-scope" href="">
+      				<div class="pull-left">
+        				<i class="fa fa-asterisk chat-user-avatar"></i>
+      				</div>
+      				<div class="media-body">
+          				<h5 class="media-heading ng-binding">
+          					<span ng-click="getArticlesByLanguage('ko')">한국어</span>
+          				</h5>
+      				</div>
+    			</a>
+    			<a class="list-group-item media ng-scope" href="">
+      				<div class="pull-left">
+        				<i class="fa fa-asterisk chat-user-avatar"></i>
+      				</div>
+      				<div class="media-body">
+          				<h5 class="media-heading ng-binding">
+          					<span ng-click="getArticlesByLanguage('ru')">pусский</span>
+          				</h5>
+      				</div>
+    			</a>
+   			</div>
+		</div>
+	</div>
+</apex:page>

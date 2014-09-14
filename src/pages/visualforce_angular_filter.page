@@ -1,0 +1,38 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false" controller="FilterController">
+	<h1 class="app-name ng-scope">{{ 'TITLE_FILTER' | translate }}</h1>
+	<div class="scrollable sidebar-scrollable ng-scope">
+  		<div class="scrollable-content">
+    		<div class="list-group">
+    			<div class="list-group-item">
+					<switch bs-form-control="true" ng-model="filterCriteria['How_To']" label="How To" label-class="col-xs-6 col-sm-2 col-lg-1" class="col-xs-6 col-sm-10 col-lg-11" ></switch>	   
+    			</div>
+				<div class="list-group-item">
+					<switch bs-form-control="true" ng-model="filterCriteria['Documentation']" label="Documentation" label-class="col-xs-6 col-sm-2 col-lg-1" class="col-xs-6 col-sm-10 col-lg-11" ></switch>
+				</div>
+    			<div class="list-group-item">
+					<switch bs-form-control="true" ng-model="filterCriteria['FAQ']" label="FAQ" label-class="col-xs-6 col-sm-2 col-lg-1" class="col-xs-6 col-sm-10 col-lg-11" ></switch>
+				</div>			
+    		</div>
+
+  		</div>
+	</div>
+	<!--
+	<div>
+		<h5>{{ 'TITLE_FILTER' | translate }}</h5>
+		<ul>
+			<li>
+				{{ 'HOWTO_FILTER' | translate }}
+				<input type="checkbox" ng-model="filterCriteria['How_To']" />
+			</li>
+			<li>
+				{{ 'DOC_FILTER' | translate }}
+				<input type="checkbox" ng-model="filterCriteria['Documentation']" />
+			</li>
+			<li>
+				{{ 'FAQ_FILTER' | translate }}
+				<input type="checkbox" ng-model="filterCriteria['FAQ']" />
+			</li>
+		</ul>
+	</div>
+	-->
+</apex:page>

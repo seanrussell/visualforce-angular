@@ -7,10 +7,6 @@
 
 		var pubStatus = 'Online';
 
-		var articles = [];
-
-		var deferred = $q.defer();
-
 		var howToArticleRO = new RemoteObjectModel.HowTo();
 
 		this.getHowToArticles = function(lang) {
@@ -28,20 +24,12 @@
 	        };
 			return query(constraints);
 		};
-
-		this.getHowToArticle = function(id, lang) {
-			var constraints = {
-				where: { 
-					and: {
-						Id: { eq: id },
-						Language: { eq: lang }  
-					}
-				}
-	        };
-			return query(constraints);
-		};
 		
 		function query(queryContraints) {	
+			var articles = [];
+
+			var deferred = $q.defer();
+
 	        howToArticleRO.retrieve(queryContraints, function(error, records) {
 	            if (error) {
 	                deferred.reject(error);
@@ -50,6 +38,7 @@
 	                deferred.resolve(articles);
 	            }
 	        });        
+	        
 	        return deferred.promise;
 	    }
 

@@ -4,14 +4,54 @@
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width" />
 		<title>Visualforce &amp; AngularJs Demonstration</title>
 		<apex:stylesheet value="{!URLFOR($Resource.static, 'css/reset.css')}" />
-		<apex:stylesheet value="{!URLFOR($Resource.static, 'css/style.css')}" />
+		<apex:stylesheet value="{!URLFOR($Resource.static, 'css/app.css')}" />
+		<apex:stylesheet value="{!URLFOR($Resource.static, 'css/mobile-angular-ui-base.min.css')}" />
 		<style>[ng-cloak] { display: none; }</style>
 	</head>
-	<body ng-app="knowledgeArticlesApp">
-		<main>
-			<ng-view></ng-view>
-		</main>
-	
+	<body ng-app="knowledgeArticlesApp" ng-controller="KnowledgeArticlesController">
+
+		<!-- Sidebars -->
+	    <div ng-include="'visualforce_angular_filter'" class="sidebar sidebar-left" toggleable="true" parent-active-class="sidebar-left-in" id="mainSidebar"></div>
+
+	    <div ng-include="'visualforce_angular_language'" class="sidebar sidebar-right" toggleable="true" parent-active-class="sidebar-right-in" id="rightSidebar"></div>
+
+	    <div class="app">
+	    	<!-- Navbars -->
+	      	<div class="navbar navbar-app navbar-absolute-top">
+	        	<div class="navbar-brand navbar-brand-center" yield-to="title">
+	          		<a href="/">Salesforce Knowledge</a>
+	        	</div>
+	        	<div class="btn-group pull-left">
+	          		<div ng-click="toggle('mainSidebar')" class="btn btn-navbar sidebar-toggle">
+	            		<i class="fa fa-filter"></i> Filter
+	          		</div>
+	        	</div>
+	        	<div class="btn-group pull-right" yield-to="navbarAction">
+	          		<div ng-click="toggle('rightSidebar')" class="btn btn-navbar">
+	            		<i class="fa fa-language"></i> Language
+	          		</div>
+	        	</div>
+	      	</div>
+
+	      	<div class="navbar navbar-app navbar-absolute-bottom">
+	        	<div class="btn-group justified">
+	          		<span ng-click="doSort('publishDate')" class="btn btn-navbar"><i class="fa fa-calendar fa-navbar"></i> {{ 'DATE_SORT' | translate }}</span>
+	          		<span ng-click="doSort('viewScore')" class="btn btn-navbar"><i class="fa fa-eye fa-navbar"></i> {{ 'VIEW_SORT' | translate }}</span>
+	          		<span ng-click="doSort('voteScore')" class="btn btn-navbar"><i class="fa fa-check fa-navbar"></i> {{ 'VOTE_SORT' | translate }}</span>
+	          		<span ng-click="doSort('title')" class="btn btn-navbar"><i class="fa fa-sort-alpha-asc fa-navbar"></i> {{ 'TITLE_SORT' | translate }}</span>
+	        	</div>
+	      	</div>
+
+	      	<!-- App Body -->
+	      	<div class="app-body" ng-class="{loading: loading}">
+	        	<div ng-show="loading" class="app-content-loading">
+	          		<i class="fa fa-spinner fa-spin loading-spinner"></i>
+	        	</div>
+	        	<ng-view class="app-content" ng-hide="loading"></ng-view>
+	      	</div>
+
+	    </div>
+
 		<!-- Define the remote objects for each article type and related objects -->
 		<apex:remoteObjects jsNamespace="RemoteObjectModel">
 			<apex:remoteObjectModel name="KnowledgeArticleVersion">
@@ -100,15 +140,23 @@
 			</apex:remoteObjectModel>
 		</apex:remoteObjects>
 		
+		<!-- jQuery specific -->
+		<script src="{!URLFOR($Resource.static, 'js/jquery-1.11.min.js')}"/>
+
 		<!-- AngularJs specific -->
 		<script src="{!URLFOR($Resource.static, 'js/angular.min.js')}"/>
 		<script src="{!URLFOR($Resource.static, 'js/angular-route.min.js')}"/>
 		<script src="{!URLFOR($Resource.static, 'js/angular-sanitize.min.js')}"/>
-
+		<script src="{!URLFOR($Resource.static, 'js/angular-touch.min.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'js/angular-translate.min.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'js/tmhDynamicLocale.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'js/mobile-angular-ui.min.js')}"/>
+	
 		<!-- Application specific -->
 		<script src="{!URLFOR($Resource.static, 'app/app.js')}"/>
 		<script src="{!URLFOR($Resource.static, 'app/factories/articleCacheFactory.js')}"/>
 		<script src="{!URLFOR($Resource.static, 'app/filters/articleListFilter.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/directives/repeatDirective.js')}"/>
 		<script src="{!URLFOR($Resource.static, 'app/services/knowledgeArticlesService.js')}"/>
 		<script src="{!URLFOR($Resource.static, 'app/services/knowledgeArticlesViewStatService.js')}"/>
 		<script src="{!URLFOR($Resource.static, 'app/services/knowledgeArticlesVoteStatService.js')}"/>
@@ -125,5 +173,7 @@
 		<script src="{!URLFOR($Resource.static, 'app/controllers/howToArticleDetailsController.js')}"/>
 		<script src="{!URLFOR($Resource.static, 'app/controllers/documentationArticleDetailsController.js')}"/>
 		<script src="{!URLFOR($Resource.static, 'app/controllers/faqArticleDetailsController.js')}"/>
+
+		<script src="{!URLFOR($Resource.static, 'js/script.js')}"/>
 	</body>
 </apex:page>

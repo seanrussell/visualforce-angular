@@ -3,28 +3,30 @@
  */
 (function(){
 	var knowledgeArticlesController = function ($scope, 
+												$translate,
+												tmhDynamicLocale,
 												articleCacheFactory,
 												knowledgeArticlesService, 
 												knowledgeArticlesViewStatService, 
 												knowledgeArticlesVoteStatService) {
 		'use strict';
 
-		var cache = articleCacheFactory.get('articleData');
-
-		$scope.filterCriteria = {
-			searchText: ''
-		};
+		$scope.lang = 'en_US';
+		$scope.filterCriteria = { searchText: '' };
 		$scope.sortBy = 'publishDate';
 		$scope.reverse = false;
 		$scope.articleWrappers = [];
-		$scope.articleTypes = [];
-		$scope.lang = 'en_US';
+		//$scope.articleTypes = [];
+
+		tmhDynamicLocale.set(getCode($scope.lang));
 
 		var articles = [];
 		var articleViewStats = [];
 		var articleVoteStats = [];
 		var articleViewStatsMap = {};
 		var articleVoteStatsMap = {};
+
+		var cache = articleCacheFactory.get('articleData');
 
 		if (cache) {
 			articles = cache.articles;
@@ -51,8 +53,7 @@
 			knowledgeArticlesService.getKnowledgeArticles($scope.lang).then(function(records) {
 				articles = records;
 				articleData['articles'] = articles;
-				$scope.articleTypes = getUniqueArticleTypes(articles);
-				console.log(articles);
+				//$scope.articleTypes = getUniqueArticleTypes(articles);
 				
 				knowledgeArticlesViewStatService.getKnowledgeViewStats().then(function(records) {
 					articleViewStats = records;
@@ -73,30 +74,83 @@
 							$scope.articleWrappers.push(articleWrapper);
 						}
 
-						articleCacheFactory.put('articleData', articleData);
-						/*
-						knowledgeArticlesDataCategoriesService.getKnowledgeDataCategories().then(function(records) {
-							dataCategories = records;
-							$scope.dataCategoriesAll = groupDataCategories(dataCategories);
-
-							for (var i = 0; i < articles.length; i++) {
-								var article = articles[i];
-								var articleDataCategories = dataCategories.filter(function (el) { return el.ParentId == article.Id; });
-								var groupedDataCategories = groupDataCategories(articleDataCategories);
-								
-								var articleWrapper = translateToArticleWrapper(article, 
-																				articleViewStatsMap[article.KnowledgeArticleId],
-																				articleVoteStatsMap[article.KnowledgeArticleId],
-																				groupedDataCategories);
-								$scope.articleWrappers.push(articleWrapper);
-							}
-						});	
-						*/
+						articleCacheFactory.put('articleData', articleData);		
 					});
 				});
 			});
 		}
 		
+		$scope.getArticlesByLanguage = function(language) {
+			$scope.lang = language;
+			$translate.use($scope.lang);
+			tmhDynamicLocale.set(getCode(language));
+			
+			var articles = [];
+			var articleViewStats = [];
+			var articleVoteStats = [];
+			var articleViewStatsMap = {};
+			var articleVoteStatsMap = {};
+			
+			knowledgeArticlesService.getKnowledgeArticles($scope.lang).then(function(records) {
+				var cache = articleCacheFactory.get('articleData');
+
+				articles = records;
+
+				cache['articles'] = articles;
+
+				articleViewStats = cache.articleViewStats;
+				articleViewStatsMap = toMap(articleViewStats);
+
+				articleVoteStats = cache.articleVoteStats;
+				articleVoteStatsMap = toMap(articleVoteStats);
+
+				$scope.articleWrappers = [];
+
+				for (var i = 0; i < articles.length; i++) {
+					var article = articles[i];	
+					var articleWrapper = translateToArticleWrapper(article, 
+																	articleViewStatsMap[article.KnowledgeArticleId],
+																	articleVoteStatsMap[article.KnowledgeArticleId],
+																	null);
+					$scope.articleWrappers.push(articleWrapper);
+				}	
+
+				articleCacheFactory.put('articleData', cache);
+
+
+			});
+		}
+
+		$scope.doSort = function(propName) {
+			$scope.sortBy = propName;
+			$scope.reverse = !$scope.reverse;
+		};
+
+		$scope.$on('renderStarRatings', function(scope, element, attrs){ 
+			$('span.stars').stars(); 
+		});
+
+		$scope.$on('renderViewRatings', function(scope, element, attrs){ 
+			$('span.views').views(); 
+		});
+
+		$scope.renderRatings = function() {};
+
+		function getCode(code) {
+			var langObj = {
+				'en_US': 'en',
+				'zh_TW': 'zh-tw',
+				'it': 'it-it',
+				'es': 'es-es',
+				'fr': 'fr-fr',
+				'de': 'de-de',
+				'ko': 'ko-kr',
+				'ja': 'ja-jp',
+				'ru': 'ru-ru'
+			};
+			return langObj[code];
+		}
+
 		function toMap(records) {
 			var objMap = {};
 			for (var i = 0; i < records.length; i++) {
@@ -149,14 +203,11 @@
 			}
 			return arrTypes;
 		}
-
-		$scope.doSort = function(propName) {
-			$scope.sortBy = propName;
-			$scope.reverse = !$scope.reverse;
-		};
 	};
 
 	knowledgeArticlesController.$inject = ['$scope', 
+											'$translate',
+											'tmhDynamicLocale',
 											'ArticleCacheFactory',
 											'KnowledgeArticlesService',
 											'KnowledgeArticlesViewStatService',

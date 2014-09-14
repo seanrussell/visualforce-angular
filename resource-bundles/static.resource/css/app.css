@@ -1,0 +1,54 @@
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+ 
+.clearfix {
+    display: inline-block;
+}
+ 
+html[xmlns] .clearfix {
+    display: block;
+}
+ 
+* html .clearfix {
+    height: 1%;
+}
+
+h4 {
+	margin-bottom: 0;
+}
+
+span.stars {
+	float: right;
+}
+
+span.views {
+	float:left;
+}
+
+span.stars, span.stars span {
+	display: block;
+	background: url('../img/star-rating.png') 0 -16px repeat-x;
+	width: 80px;
+	height: 16px;
+}
+
+span.stars span {
+	background-position: 0 0;
+}
+
+span.views, span.views span {
+	display: block;
+	background: url('../img/square-views.png') 0 -16px repeat-x;
+	width: 80px;
+	height: 16px;
+}
+
+span.views span {
+	background-position: 0 0;
+}

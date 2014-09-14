@@ -1,15 +1,42 @@
 <apex:page showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false">
-	<h3>{{ articleWrapper.title }}</h3>
-	<p>{{ articleWrapper.summary }}</p>
-	<h4>{{ articleWrapper.question }}</h4>
-	<p>{{ articleWrapper.answer }}</p>
-	<span>Last Published: {{ articleWrapper.publishDate | date:'mediumDate' }}</span>
-	<ul>
-		<li>Language: {{ articleWrapper.language }}</li>
-		<li>View Count: {{ articleWrapper.viewCount }}</li>
-		<li>View Score: {{ articleWrapper.viewScore }}</li>
-		<li>Vote Count: {{ articleWrapper.voteCount }}</li>
-		<li>Vote Score: {{ articleWrapper.voteScore }}</li>
-	</ul>
-	<a href="/#">Back</a>
+	<div class="scrollable">
+  		<div class="scrollable-content">
+  			<div class="section container-fluid">
+				<ul class="nav nav-tabs">
+					<li><a href="#Tab1" toggle="on" parent-active-class="active">Article Detail</a></li>
+					<li><a href="#Tab2" toggle="on" parent-active-class="active">Submit Case</a></li>
+				</ul>
+
+				<div class="tab-content">
+	  				<div class="tab-pane" toggleable="true" active-class="active" default="active" id="Tab1" exclusion-group="myTabs">
+						<h3 class="page-header">{{ articleWrapper.title }}</h3>
+						<div class="col-xs-12 clearfix">
+							<span class="views" data-views="{{ articleWrapper.viewScore }}"></span>
+							<span class="stars" data-votes="{{ articleWrapper.voteScore }}"></span>
+						</div>
+	    				<p>
+							<p>{{ articleWrapper.summary }}</p>
+							<h4>{{ articleWrapper.question }}</h4>
+							<p>{{ articleWrapper.answer }}</p>
+							<h5>Last Published {{ articleWrapper.publishDate | date:'mediumDate' }}</h5>
+	    				</p>
+	  				</div>
+
+	  				<div class="tab-pane" toggleable="true" active-class="active" id="Tab2" exclusion-group="myTabs">
+	    				<h3 class="page-header">Need Help?</h3>
+	    				<p>
+	    					
+
+
+	    				</p>
+	  				</div>
+				</div>
+
+				<div class="btn-group justified nav-tabs">
+	  				<a class="btn btn-default" href="#Tab1" toggle="on" active-class="active">Article Detail</a>
+					<a class="btn btn-default" href="#Tab2" toggle="on" active-class="active">Submit Case</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </apex:page>
