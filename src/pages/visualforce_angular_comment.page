@@ -1,0 +1,33 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false">
+    <h1 class="app-name ng-scope">{{ 'HELP_TITLE_FILTER' | translate }}</h1>
+    <div class="scrollable ng-scope">
+        <div class="scrollable-content">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h2 class="panel-title">
+                        {{ 'HELP_SUBTITLE_FILTER' | translate }}
+                    </h2>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <label for="case_subject" class="control-label col-xs-12">{{ 'SUBJECT_FILTER' | translate }}</label>
+                        <div class="form-control-wrapper col-xs-12">
+                            <input bs-form-control="" type="text" ng-model="caseDetails.Subject" label="Subject" label-class="col-xs-3 col-sm-2 col-lg-1" class="ng-scope ng-pristine ng-valid needsclick form-control" placeholder="" id="case_subject" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="case_comment" class="control-label col-xs-12">{{ 'COMMENT_FILTER' | translate }}</label>
+                        <div class="form-control-wrapper col-xs-12">
+                            <textarea type="text" ng-model="caseDetails.Description" label="Address" bs-form-control="" class="ng-scope ng-pristine ng-valid needsclick form-control" id="case_comment"></textarea>
+                        </div>
+                    </div>
+                    <div duplicate="" class="ng-scope btn-submit">
+                        <button class="btn btn-primary" ng-click="submitCase()">
+                         {{ 'SUBMIT_FILTER' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </div>    
+        </div>  
+	</div>
+</apex:page>

@@ -2,37 +2,83 @@
 	<h1 class="app-name ng-scope">{{ 'TITLE_FILTER' | translate }}</h1>
 	<div class="scrollable sidebar-scrollable ng-scope">
   		<div class="scrollable-content">
-    		<div class="list-group">
-    			<div class="list-group-item">
-					<switch bs-form-control="true" ng-model="filterCriteria['How_To']" label="How To" label-class="col-xs-6 col-sm-2 col-lg-1" class="col-xs-6 col-sm-10 col-lg-11" ></switch>	   
-    			</div>
-				<div class="list-group-item">
-					<switch bs-form-control="true" ng-model="filterCriteria['Documentation']" label="Documentation" label-class="col-xs-6 col-sm-2 col-lg-1" class="col-xs-6 col-sm-10 col-lg-11" ></switch>
-				</div>
-    			<div class="list-group-item">
-					<switch bs-form-control="true" ng-model="filterCriteria['FAQ']" label="FAQ" label-class="col-xs-6 col-sm-2 col-lg-1" class="col-xs-6 col-sm-10 col-lg-11" ></switch>
-				</div>			
-    		</div>
+  			<ul class="list-group">
+  				<apex:repeat value="{!articleTypes}" var="articleType">
+					<li class="list-group-item clearfix">
+						<span class="typeLabel">
+						{{ '{!articleType.placeholder}' | translate }}
+						</span>
+     					<label class="checkbox">
+       						<input type="checkbox" ng-model="filterCriteria['{!articleType.filterTag}']" ng-init="filterCriteria['{!articleType.filterTag}'] = true" ng-click="setAllArticles('{!articleType.filterTag}')" />
+     					</label>
+  					</li>
+  				</apex:repeat>
+			</ul>
+	
+			<h1 class="app-name ng-scope">{{ 'DATA_CAT_FILTER' | translate }}</h1>
+			<div class="list-group">
+				<apex:repeat value="{!dataCategorySets}" var="catSet">
+					<div class="list-group-item clearfix" ng-init="filterCriteria.dataCategories['{!catSet}'] = []">
+						<div class="btn-group pull-right toggleable-dropdown" active-class="open" id="{!catSet}" toggleable="active">
+							<button type="button" class="btn btn-default dropdown-toggle" toggle="toggle" target="{!catSet}">
+								<span class="categoryGroupLabel">{{ '{!catSet}_FILTER' | translate }}</span>
+					    		<span class="caret"></span>
+					  		</button>
+							<ul class="dropdown-menu catDropDown" role="menu" toggle="off" bubble="true" target="{!catSet}">
+					  			<apex:repeat value="{!dataCategorySets[catSet]}" var="dataCat">
+					    			<li class="{!dataCat.level}">
+					    				<a href="#" ng-click="setCategoryFilter('{!catSet}','{!dataCat.name}')">
+					    				{{ '{!dataCat.placeholder}' | translate }}
+					    				<i class="fa fa-check catSel" ng-hide="isCategorySelected('{!catSet}','{!dataCat.name}')"></i>
+					    				</a>
+					    			</li>
+					    		</apex:repeat>
+					  		</ul>
+					  	</div>
+					</div>
+				</apex:repeat>
+			</div>
 
+			<h1 class="app-name ng-scope">{{ 'LANG_FILTER' | translate }}</h1>
+			<div class="list-group" toggle="off" bubble="true" target="mainSidebar">
+				<a class="list-group-item" href="#" ng-click="getArticlesByLanguage('en_US')">
+      				English
+      				<i class="fa fa-chevron-right pull-right"></i>
+    			</a>
+    			<a class="list-group-item" href="#" ng-click="getArticlesByLanguage('it')">
+      				Italiano
+      				<i class="fa fa-chevron-right pull-right"></i>
+    			</a>
+    			<a class="list-group-item" href="#" ng-click="getArticlesByLanguage('ja')">
+      				日本語
+      				<i class="fa fa-chevron-right pull-right"></i>
+    			</a>
+    			<a class="list-group-item" href="#" ng-click="getArticlesByLanguage('zh_TW')">
+      				中國
+      				<i class="fa fa-chevron-right pull-right"></i>
+    			</a>
+    			<a class="list-group-item" href="#" ng-click="getArticlesByLanguage('de')">
+      				Deutsch
+      				<i class="fa fa-chevron-right pull-right"></i>
+    			</a>
+    			<a class="list-group-item" href="#" ng-click="getArticlesByLanguage('fr')">
+      				Français
+      				<i class="fa fa-chevron-right pull-right"></i>
+    			</a>
+    			<a class="list-group-item" href="#" ng-click="getArticlesByLanguage('es')">
+      				Español
+      				<i class="fa fa-chevron-right pull-right"></i>
+    			</a>
+    			<a class="list-group-item" href="#" ng-click="getArticlesByLanguage('ko')">
+      				한국어
+      				<i class="fa fa-chevron-right pull-right"></i>
+    			</a>
+    			<a class="list-group-item" href="#" ng-click="getArticlesByLanguage('ru')">
+      				pусский
+      				<i class="fa fa-chevron-right pull-right"></i>
+    			</a>
+			</div>
   		</div>
 	</div>
-	<!--
-	<div>
-		<h5>{{ 'TITLE_FILTER' | translate }}</h5>
-		<ul>
-			<li>
-				{{ 'HOWTO_FILTER' | translate }}
-				<input type="checkbox" ng-model="filterCriteria['How_To']" />
-			</li>
-			<li>
-				{{ 'DOC_FILTER' | translate }}
-				<input type="checkbox" ng-model="filterCriteria['Documentation']" />
-			</li>
-			<li>
-				{{ 'FAQ_FILTER' | translate }}
-				<input type="checkbox" ng-model="filterCriteria['FAQ']" />
-			</li>
-		</ul>
-	</div>
-	-->
+
 </apex:page>

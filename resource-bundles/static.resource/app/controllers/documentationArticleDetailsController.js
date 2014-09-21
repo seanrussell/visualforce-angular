@@ -55,7 +55,7 @@
 				});
 			});
 		}
-	
+
 		function translateToArticleWrapper(article, viewStat, voteStat) {
 			var wrapper = {};
 			wrapper.id = article.Id
@@ -67,8 +67,10 @@
 			wrapper.language = article.Language; 
 			wrapper.viewCount = viewStat.ViewCount;
 			wrapper.viewScore = viewStat.NormalizedScore;
+			wrapper.viewsWidth = calculateWidth(viewStat.NormalizedScore, 11);
 			wrapper.voteCount = voteStat.WeightedCount;
 			wrapper.voteScore = voteStat.NormalizedScore;
+			wrapper.votesWidth = calculateWidth(voteStat.NormalizedScore, 16);
 			return wrapper;
 		}
 
@@ -76,6 +78,10 @@
 			var e = document.createElement('div');
   			e.innerHTML = input;
   			return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+		}
+
+		function calculateWidth(score, factor) {
+			return Math.max(0, (Math.min(5, parseFloat(score)))) * factor;
 		}
 	};
 

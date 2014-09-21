@@ -3,9 +3,9 @@
  */
 (function() {
 	var knowledgeArticlesDataCategoriesService = function ($q, 
-													howToDataCategoriesService,
-													documentationDataCategoriesService,
-													faqDataCategoriesService) {
+														howToDataCategoriesService,
+														documentationDataCategoriesService,
+														faqDataCategoriesService) {
 		'use strict';
 
 		var articleDataCategories = [];
@@ -37,20 +37,12 @@
 
 	        return deferred.promise;
 	    }
-
-	    // grab _props from each record object so we can get key/value pairs
-	    function toJson(records) {
-	    	return records.map(function(r) {
-	    		return r['_props'];
-	    	});
-	    }
-
 	};
 
 	knowledgeArticlesDataCategoriesService.$inject = ['$q', 
-												'HowToDataCategoriesService', 
-												'DocumentationDataCategoriesService', 
-												'FaqDataCategoriesService'];
+													'HowToDataCategoriesService', 
+													'DocumentationDataCategoriesService', 
+													'FaqDataCategoriesService'];
 
 	angular.module('knowledgeArticlesApp')
 		.service('KnowledgeArticlesDataCategoriesService', knowledgeArticlesDataCategoriesService);

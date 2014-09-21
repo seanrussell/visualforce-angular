@@ -1,15 +1,24 @@
 <apex:page showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false">
-	<input type="search" class="form-control app-search" placeholder="Search.." ng-model="filterCriteria.searchText" />
+	<input type="search" class="form-control app-search top-search" placeholder="Search..." ng-model="filterCriteria.searchText" />
 	<div class="scrollable">
-  		<div class="scrollable-content">
+  		<div class="scrollable-content">		
 			<div class="list-group">
-				<a ng-repeat="article in articleWrappers | ArticleListFilter:filterCriteria | orderBy:sortBy:reverse" href="#/{{ article.articleType }}/{{ article.id }}/{{ lang }}" class="list-group-item ng-scope ng-binding clearfix" render-directive="renderRatings">
+				<a ng-repeat="article in articleWrappers | ArticleListFilter:filterCriteria | orderBy:sortBy:reverse" href="#/{{ article.articleType }}/{{ article.id }}/{{ lang }}" class="list-group-item ng-scope ng-binding clearfix repeat-animation">
         			<h4>{{ article.title }}</h4>
-        			<div class="media-body">{{ 'PUB_DATE' | translate }} {{ article.publishDate | date:'mediumDate' }}</div>
-        			<span class="views" data-views="{{ article.viewScore }}"></span>
-					<span class="stars" data-votes="{{ article.voteScore }}"></span>
+        			<div class="media-body">
+        				{{ article.summary }}
+        			</div>
+        			<div class="media-body">
+        				{{ 'PUB_DATE' | translate }} {{ article.publishDate | date:'mediumDate' }}
+        			</div>
+        			<span class="views">
+        				<span style="width:{{ article.viewsWidth }}px;"></span>
+        			</span>
+					<span class="stars">
+						<span style="width:{{ article.votesWidth }}px;"></span>
+					</span>
       			</a>
-			</div>
+			</div>	
 		</div>
 	</div>
 </apex:page>

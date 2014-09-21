@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
+        <members>FilterController</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>visualforce_angular_comment</members>
         <members>visualforce_angular_detail_documentation</members>
         <members>visualforce_angular_detail_faq</members>
         <members>visualforce_angular_detail_howto</members>
+        <members>visualforce_angular_filter</members>
         <members>visualforce_angular_index</members>
         <members>visualforce_angular_list</members>
         <name>ApexPage</name>
@@ -18,5 +24,5 @@
         <members>static</members>
         <name>StaticResource</name>
     </types>
-    <version>30.0</version>
+    <version>31.0</version>
 </Package>
