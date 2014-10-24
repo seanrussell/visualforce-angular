@@ -1,14 +1,206 @@
 <apex:page showHeader="false" sidebar="false" standardStylesheets="false" docType="html-5.0" applyBodyTag="false">
 	<head>
 		<meta charset="utf-8" />
-		<title></title>
-		<apex:stylesheet value="{!URLFOR($Resource.static, 'css/style.css')}" />
+		<meta name="viewport" content="initial-scale=1, width=device-width" />
+		<title>Visualforce &amp; AngularJs Demonstration</title>
+		<apex:stylesheet value="{!URLFOR($Resource.static, 'css/mobile-angular-ui-hover.min.css')}" />
+		<apex:stylesheet value="{!URLFOR($Resource.static, 'css/mobile-angular-ui-base.min.css')}" />
+		<apex:stylesheet value="{!URLFOR($Resource.static, 'css/mobile-angular-ui-desktop.min.css')}" />
+		<apex:stylesheet value="{!URLFOR($Resource.static, 'css/app.css')}" />
+		<apex:stylesheet value="{!URLFOR($Resource.static, 'css/animations.css')}" />
 		<style>[ng-cloak] { display: none; }</style>
 	</head>
-	<body>
+	<!-- 
+		Define body tag as the root of the AngularJS application 
+		Specify the main controller at this level as well
+	-->
+	<body ng-app="knowledgeArticlesApp" ng-controller="KnowledgeArticlesController">
 
-		<apex:includeScript value="{!URLFOR($Resource.static, 'js/angular.min.js')}"/>
-		<apex:includeScript value="{!URLFOR($Resource.static, 'js/angular-route.min.js')}"/>
-		<apex:includeScript value="{!URLFOR($Resource.static, 'app/app.js')}"/>
+		<!-- Left sidebar containing filters and language selection -->
+	    <div ng-include="'visualforce_angular_filter'" class="sidebar sidebar-left" toggleable="true" parent-active-class="sidebar-left-in" id="mainSidebar"></div>
+
+		<!-- Right sidebar containing feedback form -->
+	    <div ng-include="'visualforce_angular_comment'" class="sidebar sidebar-right" toggleable="true" parent-active-class="sidebar-right-in" id="rightSidebar"></div>
+
+	    <div class="app">
+	    	<!-- Top section with title and links to toggle left and right sidebars -->
+	      	<div class="navbar navbar-app navbar-absolute-top">
+	        	<div class="navbar-brand navbar-brand-center" yield-to="title">
+	          		<a href="/" ng-cloak="true">{{ 'SK' | translate }}</a>
+	        	</div>
+	        	<div class="btn-group pull-left">
+	          		<div ng-click="toggle('mainSidebar')" class="btn btn-navbar sidebar-toggle">
+	            		<i class="fa fa-filter top-icon"></i>
+	          		</div>
+	        	</div>
+	        	<div class="btn-group pull-right" yield-to="navbarAction">
+	          		<div ng-click="toggle('rightSidebar')" class="btn btn-navbar">
+	            		<i class="fa fa-comment top-icon"></i>
+	          		</div>
+	        	</div>
+	      	</div>
+
+			<!-- Bottom section containing icons for sorting the list -->
+	      	<div class="navbar navbar-app navbar-absolute-bottom">
+	        	<div class="btn-group justified">
+	          		<span ng-click="doSort('publishDate')" class="btn btn-navbar">
+	          			<i class="fa fa-calendar fa-navbar bottom-icon"></i>
+	          		</span>
+	          		<span ng-click="doSort('viewScore')" class="btn btn-navbar">
+	          			<i class="fa fa-eye fa-navbar bottom-icon"></i>
+	          		</span>
+	          		<span ng-click="doSort('voteScore')" class="btn btn-navbar">
+	          			<i class="fa fa-check-square-o fa-navbar bottom-icon"></i>
+	          		</span>
+	          		<span ng-click="doSort('title')" class="btn btn-navbar">
+	          			<i class="fa fa-sort-alpha-asc fa-navbar bottom-icon"></i>
+	          		</span>
+	        	</div>
+	      	</div>
+
+	      	<!-- Main view section where views are loaded -->
+	      	<div class="app-body" ng-class="{loading: loading}">
+	        	<div ng-show="loading" class="app-content-loading ng-hide">
+          			<i class="fa fa-spinner fa-spin loading-spinner"></i>
+        		</div>
+	        	<ng-view class="app-content slide-animation" ng-hide="loading"></ng-view>
+	      	</div>
+
+	    </div>
+
+		<div overlay="successMsg">
+  			<h4 class="overlay-title">{{ 'FEEDBACK_TITLE_FILTER' | translate }}</h4>
+  			<p>
+    		{{ 'FEEDBACK_SUCCESS_TEXT' | translate }}
+  			</p>
+  			<p toggle="off" bubble="true" target="successMsg">
+    			<span class="btn btn-primary">{{ 'FEEDBACK_OK' | translate }}</span>
+  			</p>  
+		</div>
+
+		<!-- Define the remote objects will communicate with on Salesforce -->
+		<apex:remoteObjects jsNamespace="RemoteObjectModel">
+			<apex:remoteObjectModel name="How_To__kav" jsShorthand="HowTo">
+				<apex:remoteObjectField name="KnowledgeArticleId" />
+				<apex:remoteObjectField name="ArticleType" />
+				<apex:remoteObjectField name="Title" />
+				<apex:remoteObjectField name="Summary" />
+				<apex:remoteObjectField name="Content__c" />
+				<apex:remoteObjectField name="LastPublishedDate" />
+				<apex:remoteObjectField name="PublishStatus" />
+				<apex:remoteObjectField name="Language" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="How_To__ViewStat" jsShorthand="HowToViewStat">
+				<apex:remoteObjectField name="Channel" />
+				<apex:remoteObjectField name="NormalizedScore" />
+				<apex:remoteObjectField name="ParentId" />
+				<apex:remoteObjectField name="ViewCount" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="How_To__VoteStat" jsShorthand="HowToVoteStat">
+				<apex:remoteObjectField name="Channel" />
+				<apex:remoteObjectField name="NormalizedScore" />
+				<apex:remoteObjectField name="ParentId" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="How_To__DataCategorySelection" jsShorthand="HowToCategory">
+				<apex:remoteObjectField name="ParentId" />
+				<apex:remoteObjectField name="DataCategoryGroupName" />
+				<apex:remoteObjectField name="DataCategoryName" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="Documentation__kav" jsShorthand="Documentation">
+				<apex:remoteObjectField name="KnowledgeArticleId" />
+				<apex:remoteObjectField name="ArticleType" />
+				<apex:remoteObjectField name="Title" />
+				<apex:remoteObjectField name="Summary" />
+				<apex:remoteObjectField name="Content__c" />
+				<apex:remoteObjectField name="LastPublishedDate" />
+				<apex:remoteObjectField name="PublishStatus" />
+				<apex:remoteObjectField name="Language" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="Documentation__ViewStat" jsShorthand="DocumentationViewStat">
+				<apex:remoteObjectField name="Channel" />
+				<apex:remoteObjectField name="NormalizedScore" />
+				<apex:remoteObjectField name="ParentId" />
+				<apex:remoteObjectField name="ViewCount" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="Documentation__VoteStat" jsShorthand="DocumentationVoteStat">
+				<apex:remoteObjectField name="Channel" />
+				<apex:remoteObjectField name="NormalizedScore" />
+				<apex:remoteObjectField name="ParentId" />
+			</apex:remoteObjectModel>	
+			<apex:remoteObjectModel name="Documentation__DataCategorySelection" jsShorthand="DocumentationCategory">
+				<apex:remoteObjectField name="ParentId" />
+				<apex:remoteObjectField name="DataCategoryGroupName" />
+				<apex:remoteObjectField name="DataCategoryName" />
+			</apex:remoteObjectModel>	
+			<apex:remoteObjectModel name="FAQ__kav" jsShorthand="FAQ">
+				<apex:remoteObjectField name="KnowledgeArticleId" />
+				<apex:remoteObjectField name="ArticleType" />
+				<apex:remoteObjectField name="Title" />
+				<apex:remoteObjectField name="Summary" />
+				<apex:remoteObjectField name="Question__c" />
+				<apex:remoteObjectField name="Answer__c" />
+				<apex:remoteObjectField name="LastPublishedDate" />
+				<apex:remoteObjectField name="PublishStatus" />
+				<apex:remoteObjectField name="Language" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="FAQ__ViewStat" jsShorthand="FAQViewStat">
+				<apex:remoteObjectField name="Channel" />
+				<apex:remoteObjectField name="NormalizedScore" />
+				<apex:remoteObjectField name="ParentId" />
+				<apex:remoteObjectField name="ViewCount" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="FAQ__VoteStat" jsShorthand="FAQVoteStat">
+				<apex:remoteObjectField name="Channel" />
+				<apex:remoteObjectField name="NormalizedScore" />
+				<apex:remoteObjectField name="ParentId" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="FAQ__DataCategorySelection" jsShorthand="FAQCategory">
+				<apex:remoteObjectField name="ParentId" />
+				<apex:remoteObjectField name="DataCategoryGroupName" />
+				<apex:remoteObjectField name="DataCategoryName" />
+			</apex:remoteObjectModel>
+			<apex:remoteObjectModel name="Case">
+				<apex:remoteObjectField name="Subject" />
+				<apex:remoteObjectField name="Description" />
+				<apex:remoteObjectField name="Status" />
+				<apex:remoteObjectField name="Origin" />
+			</apex:remoteObjectModel>
+		</apex:remoteObjects>
+
+		<!-- AngularJS specific -->
+		<script src="{!URLFOR($Resource.static, 'js/angular.min.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'js/angular-route.min.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'js/angular-sanitize.min.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'js/angular-touch.min.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'js/angular-animate.min.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'js/angular-translate.min.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'js/tmhDynamicLocale.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'js/mobile-angular-ui.min.js')}"/>
+	
+		<!-- Application specific -->
+		<script src="{!URLFOR($Resource.static, 'app/app.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/factories/articleCacheFactory.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/filters/articleListFilter.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/caseService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/knowledgeArticlesService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/knowledgeArticlesViewStatService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/knowledgeArticlesVoteStatService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/knowledgeArticlesDataCategoriesService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/howToArticlesService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/howToViewStatService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/howToVoteStatService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/howToDataCategoriesService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/documentationArticlesService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/documentationViewStatService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/documentationVoteStatService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/documentationDataCategoriesService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/faqArticlesService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/faqViewStatService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/faqVoteStatService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/services/faqDataCategoriesService.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/controllers/knowledgeArticlesController.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/controllers/howToArticleDetailsController.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/controllers/documentationArticleDetailsController.js')}"/>
+		<script src="{!URLFOR($Resource.static, 'app/controllers/faqArticleDetailsController.js')}"/>
 	</body>
 </apex:page>

@@ -1,0 +1,28 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false">
+	<div class="scrollable">
+  		<div class="scrollable-content">
+			<div class="panel">
+				<div class="panel-heading clearfix">
+					<a href="/" class="btn-back">
+						<i class="fa fa-chevron-circle-left"></i>
+					</a>
+					<h2 class="panel-title">
+						{{ articleWrapper.title }}
+					</h2>
+					<div class="ratingsBar">
+						<span class="views">
+							<span style="width:{{ articleWrapper.viewsWidth }}px;"></span>
+						</span>
+						<span class="stars">
+							<span style="width:{{ articleWrapper.votesWidth }}px;"></span>
+						</span>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div ng-bind-html="articleWrapper.content"></div>
+					<h5 class="lastPub">{{ 'PUB_DATE' | translate }} {{ articleWrapper.publishDate | date:'mediumDate' }}</h5>
+	    		</div>
+	  		</div>	
+		</div>
+	</div>
+</apex:page>
