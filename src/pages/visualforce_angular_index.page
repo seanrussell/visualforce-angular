@@ -1,7 +1,7 @@
 <apex:page showHeader="false" sidebar="false" standardStylesheets="false" docType="html-5.0" applyBodyTag="false">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width" />
+		<meta name="viewport" content="initial-scale=1, width=device-width" />
 		<title>Visualforce &amp; AngularJs Demonstration</title>
 		<apex:stylesheet value="{!URLFOR($Resource.static, 'css/mobile-angular-ui-hover.min.css')}" />
 		<apex:stylesheet value="{!URLFOR($Resource.static, 'css/mobile-angular-ui-base.min.css')}" />
