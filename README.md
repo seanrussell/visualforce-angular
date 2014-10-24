@@ -31,13 +31,13 @@ In addition to the standard fields that come with an Article Type object, the Ho
 [Data Categories](http://www.salesforce.com/developer/docs/api/Content/sforce_api_guidelines_datacategory.htm) classify the various articles that are created from each custom Article Type. The following list illustrates the data category hierarchy:
 
 * Products
-** equipment
-** hair care
+ * equipment
+ * hair care
 * Procedures
-** hair coloring
-** hair care
-*** washing
-*** treating
+ * hair coloring
+ * hair care
+  * washing
+  * treating
 * Inquiries
-** products
-** company
+ * products
+ * company
