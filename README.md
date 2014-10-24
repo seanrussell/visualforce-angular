@@ -1,7 +1,7 @@
 Sample Salesforce Knowledge Application using Visualforce & AngularJS
 ===================
 
-A demonstration application for a presentation I did for a local [Salesforce Developer Group](http://www.meetup.com/Lehigh-Valley-Salesforce-Developer-Group/events/206905302/) meeting. You can see the application in action [here](http://spa-developer-edition.na17.force.com/)
+A demonstration application for a presentation I did for a local [Salesforce Developer Group](http://www.meetup.com/Lehigh-Valley-Salesforce-Developer-Group/events/206905302/) meeting. You can see the application in action [here](http://spa-developer-edition.na17.force.com/).
 
 Overview
 ----------
@@ -44,7 +44,7 @@ In addition to the standard fields that come with an Article Type object, the Ho
 
 The resulting list of articles can be filtered using the 'search' text box at the top. The list can also be sorted by publish date, view count, vote rating, and alphabetically by title using the buttons along the bottom of the screen. Each article in the list can be clicked/tapped to display the article details. 
 
-On the top right is a button that, when clicked, toggles a simple feedback form that, when submitted will create a [Case]() in Salesforce.
+On the top right is a button that, when clicked, toggles a simple feedback form that, when submitted will create a [Case](http://www.salesforce.com/developer/docs/api/Content/sforce_api_objects_case.htm) in Salesforce.
 
 On the top left is a button that, when clicked, toggles an area that allows you to filtering the article list further by article type and data category. On the bottom of this section is a language selection list that allows you to choose a language within which to view the application. Any articles that have been translated in Salesforce to the selected language will also display in the article list.
 
